@@ -103,6 +103,18 @@ header{
   animation: gradient-animation 4s ease infinite;
 }
 
+.change-network-button {
+  background: #00d2ff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #00d2ff, #3a7bd5); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #00d2ff, #3a7bd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  font-size: 18px;
+  background-size: 200% 200%;
+  animation: gradient-animation 4s ease infinite;
+  margin: 20px 10px;
+  border-radius: 20px;
+  padding: 0px 2rem;
+}
+
 .mint-button {
   background: -webkit-linear-gradient(left, #a200d6, #ff6fdf);
   font-size: 18px;
