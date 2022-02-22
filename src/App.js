@@ -6,6 +6,7 @@ import contractAbi from "./utils/contractABI.json";
 import polygonLogo from "./assets/polygonlogo.png";
 import ethLogo from "./assets/ethlogo.png";
 import { networks } from "./utils/networks";
+import toast from "react-hot-toast";
 
 // Constants
 const BUILDSPACE_TWITTER_HANDLE = "_buildspace";
@@ -179,6 +180,7 @@ const App = () => {
     const price =
       domain.length <= 3 ? "0.5" : domain.length === 4 ? "0.3" : "0.1";
     console.log("Minting domain", domain, "with price", price);
+    setLoading(true);
     try {
       const { ethereum } = window;
       if (ethereum) {
@@ -203,6 +205,8 @@ const App = () => {
             "Domain minted! https://mumbai.polygonscan.com/tx/" + tx.hash
           );
 
+          const nftId = await contract.getNftId(domain);
+
           // Set the record for the domain
           tx = await contract.setAllRecords(
             domain,
@@ -214,6 +218,24 @@ const App = () => {
 
           console.log(
             "All records set! https://mumbai.polygonscan.com/tx/" + tx.hash
+          );
+
+          toast.custom(
+            <div className="toast">
+              <p>Domain minted!
+                Check it at
+                <a
+                  className="link underlined"
+                  href={`https://testnets.opensea.io/assets/mumbai/${CONTRACT_ADDRESS}/${nftId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {" "}
+                  {domain}
+                  {tld}{" "}
+                </a>
+              </p>
+          </div>
           );
 
           setTimeout(() => {
@@ -228,6 +250,7 @@ const App = () => {
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   };
 
   const updateDomain = async () => {
@@ -235,7 +258,7 @@ const App = () => {
       return;
     }
     setLoading(true);
-    console.log("Updating domain", domain, "with record", nickname);
+    console.log("Updating domain", domain, "with records:", nickname, spotifyLink, twitter);
     try {
       const { ethereum } = window;
       if (ethereum) {
@@ -370,7 +393,7 @@ const App = () => {
             disabled={loading}
             onClick={mintDomain}
           >
-            Mint
+            {loading ? "Minting..." : "Mint"}
           </button>
         )}
       </div>
