@@ -222,6 +222,18 @@ input:focus {
   margin-bottom: 13px;
 }
 
+.at {
+  position: absolute;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  /* left: -70px; */
+  left: 22px;
+  margin: 0;  
+  padding: 0;
+  margin-bottom: 13px;
+}
+
 .mint-list {
   display: flex;
   flex-direction: row;

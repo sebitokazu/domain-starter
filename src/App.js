@@ -12,7 +12,7 @@ const BUILDSPACE_TWITTER_HANDLE = "_buildspace";
 const PROFILE_TWITTER_HANDLE = "seba_itokazu";
 const BUILDSPACE_TWITTER_LINK = `https://twitter.com/${BUILDSPACE_TWITTER_HANDLE}`;
 const PROFILE_TWITTER_LINK = `https://twitter.com/${PROFILE_TWITTER_HANDLE}`;
-const BASE_TWITTER_PROFILE = 'https://twitter.com/';
+const BASE_TWITTER_PROFILE = "https://twitter.com/";
 const tld = ".ibis";
 const CONTRACT_ADDRESS = "0xf96e28F8b5C65566257753911eF41C45C56aB06F";
 
@@ -81,7 +81,7 @@ const App = () => {
       window.location.reload();
     }
 
-    function handleAccountChanged(){
+    function handleAccountChanged() {
       window.location.reload();
     }
   };
@@ -235,7 +235,7 @@ const App = () => {
       return;
     }
     setLoading(true);
-    console.log("Updating domain", domain, "with record", nickname, );
+    console.log("Updating domain", domain, "with record", nickname);
     try {
       const { ethereum } = window;
       if (ethereum) {
@@ -247,7 +247,12 @@ const App = () => {
           signer
         );
 
-        let tx = await contract.setAllRecords(domain, nickname, spotifyLink, twitter);
+        let tx = await contract.setAllRecords(
+          domain,
+          nickname,
+          spotifyLink,
+          twitter
+        );
         await tx.wait();
         console.log("Record set https://mumbai.polygonscan.com/tx/" + tx.hash);
 
@@ -304,26 +309,41 @@ const App = () => {
           <p className="tld"> {tld} </p>
         </div>
 
-        <input
-          type="text"
-          value={nickname}
-          placeholder="Your nickname"
-          onChange={(e) => setNickname(e.target.value)}
-        />
-
-        <input
-          type="text"
-          value={spotifyLink}
-          placeholder="Your Spotify fav song"
-          onChange={(e) => setSpotifyLink(e.target.value)}
-        />
-
-        <input
-          type="text"
-          value={twitter}
-          placeholder="Your twitter account"
-          onChange={(e) => setTwitter(e.target.value)}
-        />
+        <div className="first-row">
+          <img
+            className="at"
+            src="https://img.icons8.com/external-kmg-design-glyph-kmg-design/32/ffffff/external-user-back-to-school-kmg-design-glyph-kmg-design.png"
+            alt="User icon"
+          />
+          <input
+            type="text"
+            value={nickname}
+            placeholder="Your nickname"
+            onChange={(e) => setNickname(e.target.value)}
+          />
+        </div>
+        <div className="first-row">
+          <img
+            className="at"
+            src="https://img.icons8.com/color/30/000000/spotify--v1.png"
+            alt="Spotify logo"
+          />
+          <input
+            type="text"
+            value={spotifyLink}
+            placeholder="Your Spotify fav song"
+            onChange={(e) => setSpotifyLink(e.target.value)}
+          />
+        </div>
+        <div className="first-row">
+          <p className="at">@</p>
+          <input
+            type="text"
+            value={twitter}
+            placeholder="Your twitter account"
+            onChange={(e) => setTwitter(e.target.value)}
+          />
+        </div>
         {editing ? (
           <div className="button-container">
             <button
@@ -385,7 +405,14 @@ const App = () => {
                     currentAccount.toLowerCase() ? (
                       <button
                         className="edit-button"
-                        onClick={() => editRecord(mint.name, mint.nickname, mint.spotifyLink, mint.twitter)}
+                        onClick={() =>
+                          editRecord(
+                            mint.name,
+                            mint.nickname,
+                            mint.spotifyLink,
+                            mint.twitter
+                          )
+                        }
                       >
                         <img
                           className="edit-icon"
@@ -397,21 +424,28 @@ const App = () => {
                   </div>
                   <p> {mint.nickname} </p>
                   <div className="spotify-box">
-                    {mint.spotifyLink && 
-                      <iframe title={mint.name + mint.id} src={formatSpotifyLink(mint.spotifyLink)} width="300" height="80" frameBorder="0" allow="encrypted-media"></iframe>
-                    }
+                    {mint.spotifyLink && (
+                      <iframe
+                        title={mint.name + mint.id}
+                        src={formatSpotifyLink(mint.spotifyLink)}
+                        width="300"
+                        height="80"
+                        frameBorder="0"
+                        allow="encrypted-media"
+                      ></iframe>
+                    )}
                   </div>
                   <div>
-                    {mint.twitter && 
+                    {mint.twitter && (
                       <div>
-                          <a
-                            className="footer-text"
-                            href={BASE_TWITTER_PROFILE + mint.twitter}
-                            target="_blank"
-                            rel="noreferrer"
-                          >{`@${mint.twitter}`}</a>
-                        </div>
-                    }
+                        <a
+                          className="footer-text"
+                          href={BASE_TWITTER_PROFILE + mint.twitter}
+                          target="_blank"
+                          rel="noreferrer"
+                        >{`@${mint.twitter}`}</a>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
@@ -429,18 +463,21 @@ const App = () => {
     setNickname(nickname);
     setSpotifyLink(spotifyLink);
     setTwitter(twitter);
-  }
+  };
 
   const clearInput = () => {
     setNickname("");
     setSpotifyLink("");
     setTwitter("");
     setDomain("");
-  }
+  };
 
   const formatSpotifyLink = (spotifyLink) => {
-    return spotifyLink.replace("https://open.spotify.com", "https://open.spotify.com/embed");
-  }
+    return spotifyLink.replace(
+      "https://open.spotify.com",
+      "https://open.spotify.com/embed"
+    );
+  };
 
   useEffect(() => {
     checkIfWalletIsConnected();
